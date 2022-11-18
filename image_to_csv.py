@@ -15,17 +15,23 @@ def flatten(l):
     return res
 
 
+
 for directory in directory:
     images = []
     for filename in os.listdir(directory):
         f = os.path.join(directory, filename)
-        if f[-3:0] not in {"png", "jpg"}: continue
+        if f[-3::] not in {"png", "jpg"}: continue
         img = Image.open(f)
         img = img.convert("RGB")
         img = img.resize((200, 200))
         img_data = img.getdata()
-        img = img.rotate(90)
-        pixels = list(img_data)
+        temp = list(img_data)
+        n = len(temp)
+        side = int(np.sqrt(n))
+        pixels = [0]*n
+        for i in range(side):
+            for j in range(side):
+                pixels[200*i + j] = temp[200*j + i]
         images.append(flatten(pixels))
     A = np.array(images)
     print(A.shape)
