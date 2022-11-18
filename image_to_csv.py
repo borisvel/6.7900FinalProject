@@ -19,12 +19,12 @@ for directory in directory:
     images = []
     for filename in os.listdir(directory):
         f = os.path.join(directory, filename)
-        if f == "bayc/hashes.csv" or f == "bayc/renaming_scheme.csv" \
-                or f == "unicorns/data_rgb_format.csv" or f == "bayc/data_rgb_format.csv" or f == "unicorns/.ipynb_checkpoints": continue
+        if f[-3:0] not in {"png", "jpg"}: continue
         img = Image.open(f)
         img = img.convert("RGB")
         img = img.resize((200, 200))
         img_data = img.getdata()
+        img = img.rotate(90)
         pixels = list(img_data)
         images.append(flatten(pixels))
     A = np.array(images)
